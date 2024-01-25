@@ -5,7 +5,7 @@ branding:
   color: 'orange'
 inputs:
   task-definition-arn:
-    description: 'A unique Amazon Resource Name (ARN) that identifies an ECS task definition. Required if task-definition option is not specified.'
+    description: 'A unique Amazon Resource Name (ARN) that identifies an ECS task definition. If revision is not specified, a request to describe the task definition is issued. Required if task-definition option is not specified.'
     required: false
   task-definition:
     description: 'The path to the ECS task definition file to register. Required if task-definition-arn option is not specified.'

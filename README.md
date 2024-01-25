@@ -103,6 +103,7 @@ The task definition file can be updated prior to deployment with the new contain
 ```
 
 If you're using CloudFormation tools such as AWS CDK, Serverless Framework, or others to construct your task definition, you can directly pass the ARN of the task definition. For example:
+
 ```yaml
   - name: Deploy Amazon ECS task definition
     uses: aws-actions/amazon-ecs-deploy-task-definition@v1
@@ -112,6 +113,7 @@ If you're using CloudFormation tools such as AWS CDK, Serverless Framework, or o
       cluster: my-cluster
       wait-for-service-stability: true
 ```
+If `revision_number` is not specified, a request to describe the task definition is issued.
 
 ## Credentials and Region
 

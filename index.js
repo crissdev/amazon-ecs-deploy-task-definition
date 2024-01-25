@@ -290,6 +290,14 @@ async function run() {
       taskDefinitionArn = registerResponse.taskDefinition.taskDefinitionArn;
     } else {
       taskDefinitionArn = core.getInput('task-definition-arn', { required: true });
+      if (!taskDefinitionArn.match(/arn:.+:\d+$/)) {
+        const response = await ecs.describeTaskDefinition({taskDefinition: taskDefinitionArn}).promise();
+        if (!response.taskDefinition.taskDefinitionArn) {
+          throw new Error(`No revision available for task definition ${taskDefinitionArn}`);
+        }
+        taskDefinitionArn = response.taskDefinition.taskDefinitionArn;
+        console.log('arn:', taskDefinitionArn);
+      }
     }
     core.setOutput('task-definition-arn', taskDefinitionArn);
 
