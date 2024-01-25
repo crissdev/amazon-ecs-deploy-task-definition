@@ -151,6 +151,24 @@ describe('Deploy to ECS', () => {
         });
     });
 
+    test('uses task definition ARN if taskDefinitionContent starts with arn:', async () => {
+        core.getInput = jest
+          .fn()
+          .mockReturnValueOnce('') // task-definition
+          .mockReturnValueOnce('service-456')         // service
+          .mockReturnValueOnce('cluster-789')         // cluster
+          .mockReturnValueOnce('false')               // wait-for-service-stability
+          .mockReturnValueOnce('')                    // wait-for-minutes
+          .mockReturnValueOnce('')                    // force-new-deployment
+          .mockReturnValueOnce('arn:aws:ecs:region:account-id:task-definition/task-name:task-revision') // task-definition-arn
+
+        await run();
+
+        expect(core.setFailed).toHaveBeenCalledTimes(0);
+        expect(mockEcsRegisterTaskDef).toHaveBeenCalledTimes(0);  // Important, you must not call the register function
+        expect(core.setOutput).toHaveBeenNthCalledWith(1, 'task-definition-arn', 'arn:aws:ecs:region:account-id:task-definition/task-name:task-revision');
+    });
+
     test('registers the task definition contents and updates the service', async () => {
         await run();
         expect(core.setFailed).toHaveBeenCalledTimes(0);
